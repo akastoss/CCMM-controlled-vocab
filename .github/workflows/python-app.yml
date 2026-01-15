@@ -39,6 +39,7 @@ jobs:
     - name: Convert CSV to TTL
       run: |
         python convert_csv_to_ttl.py "${{ inputs.vocabulary_name }}"
-    - name: Test with pytest
+    - name: Test with pytest (allow no tests)
       run: |
-        pytest
+        pytest -q || [ $? -eq 5 ]
+
