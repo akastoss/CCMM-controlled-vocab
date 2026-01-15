@@ -42,4 +42,14 @@ jobs:
     - name: Test with pytest (allow no tests)
       run: |
         pytest -q || [ $? -eq 5 ]
+    - name: Commit and push to main (if changed)
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+        git add "${{ inputs.vocabulary_name }}.ttl"
+        git diff --cached --quiet && echo "No changes to commit." && exit 0
+
+        git commit -m "chore: regenerate ${{ inputs.vocabulary_name }}.ttl [skip ci]"
+        git push origin HEAD:main
 
